@@ -9,7 +9,7 @@ import utils.util as util
 import torch.nn.functional as F
 from math import log10
 
-from restormer_model import SIDFormer
+from model import DFPN
 
 import argparse
 import yaml
@@ -61,7 +61,7 @@ def main():
     args, config = parse_args_and_config()
 
     # Load model
-    model = SIDFormer().eval().cuda()
+    model = DFPN().eval().cuda()
     state_dict = torch.load('./best/best_RSHaze_45.45_train_base.pth')
 
     model.load_state_dict(state_dict)
