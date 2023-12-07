@@ -1,0 +1,29 @@
+# Baseline Code Config
+
+# dataset
+train:
+  name: 'RSHaze'
+  data_dir: 'RSHaze/'
+  input_dir: 'train/hazy/'
+  target_dir: 'train/GT'
+#  train_list_name: 'train_list.txt'
+
+val:
+  name: 'RSHaze'
+  data_dir: 'RSHaze/'
+  input_dir: 'train/hazy/'
+  target_dir: 'train/GT'
+
+test:
+  name: 'RSHaze'
+  data_dir: 'RSHaze/'
+  input_dir: 'test/hazy/'
+  target_dir: 'test/GT'
+#  test_list_name: 'test_list.txt'
+
+
+visualize:
+    port: '9010'
+    server: "http://localhost"   
+    # server: '10.252.110.47'    
+#    env: 'features'
