@@ -107,8 +107,6 @@ class CALayer(nn.Module):
             nn.Sigmoid()
         )
 
-        # self.ca = MDTA(channel, 4)
-
     def forward(self, x):
         y = self.avg_pool(x)
         y = self.ca(y)
@@ -127,22 +125,15 @@ class Block(nn.Module):
 
         self.conv2 = conv(dim, dim, kernel_size, bias=True)
 
-        self.calayer = CALayer(dim)
-        # self.palayer = PALayer(dim)
-
-        # self.norm = nn.LayerNorm(dim)
+        self.calayer = CALayer(dim)        
 
     def forward(self, x):
         
-        res = self.conv1(x)
-        # res = res.permute(0, 2, 3, 1)  # (N, C, H, W) -> (N, H, W, C)
-        # res = self.norm(res)
-        # res = res.permute(0, 3, 1, 2)  # (N, H, W, C) -> (N, C, H, W)
-        res = self.act1(res)
-        # res = res + x
+        res = self.conv1(x)        
+        res = self.act1(res)        
         res = self.conv2(res)
         res = self.calayer(res)
-        # res = self.palayer(res)
+        
         res += x
 
         return res
@@ -230,28 +221,26 @@ class DFPN(nn.Module):
         self.low_out = nn.Conv2d(feature_num, 3, kernel_size=3, padding=1, bias=False)
         self.high_out = nn.Conv2d(feature_num, 3, kernel_size=3, padding=1, bias=True)
 
-        # self.cat_conv = nn.Conv2d(feature_num*2, feature_num, 3, 1, 1, bias=False)
-
         
     def forward(self, x):
         
         feat0 = self.embed_conv(x)
         
-        # UNet: feature encoder
+        # UNet: feature extractor
         t_feat1 = self.t_block1(feat0) 
         t_feat2 = self.t_block2(self.down1(t_feat1))
         t_feat3 = self.t_block3(self.down2(t_feat2))
 
         t_feat4 = self.t_block4(self.down3(t_feat3))
         
-        # Low freqeuncy: transformer (MDTA)
+        # Low freqeuncy: transformer
         t_feat5 = self.t_block5(self.up3(t_feat4)) + t_feat3
         t_feat6 = self.t_block6(self.up2(t_feat5)) + t_feat2
         t_feat7 = self.t_block7(self.up1(t_feat6)) + t_feat1
 
         low = self.low_out(t_feat7) + x
 
-        # High freqeuncy: convolution (ResGroup with layer norm)
+        # High freqeuncy: convolution
         c_feat5 = self.c_block1(self.c_up3(t_feat4)) + t_feat3
         c_feat6 = self.c_block2(self.c_up2(c_feat5)) + t_feat2
         c_feat7 = self.c_block3(self.c_up1(c_feat6)) + t_feat1
@@ -260,6 +249,4 @@ class DFPN(nn.Module):
 
         out = low + high
 
-        # feat_list = [t_feat4, t_feat7, c_feat7]
-
-        return out, low, high#, feat_list
+        return out, low, high

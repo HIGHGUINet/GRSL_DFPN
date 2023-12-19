@@ -6,15 +6,10 @@ from PIL import Image
 from torchvision.transforms import ToTensor
 import utils.util as util
 
-import torch.nn.functional as F
-from math import log10
-
 from model import DFPN
 
 import argparse
 import yaml
-
-import torchvision
 
 # Argument
 BATCH_SIZE = 1          # Batch_size
@@ -62,7 +57,7 @@ def main():
 
     # Load model
     model = DFPN().eval().cuda()
-    state_dict = torch.load('./best/best_RSHaze_45.45_train_base.pth')
+    state_dict = torch.load('./weights/RSHaze_train.pth')
 
     model.load_state_dict(state_dict)
 
