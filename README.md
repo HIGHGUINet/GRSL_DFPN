@@ -12,6 +12,6 @@ You can easily test the model.
 2. python base_test.py
 
 ### Results
-All results can be downloaded from the link below.
+All results can be downloaded from the link below.  
 [RSHaze results](https://drive.google.com/file/d/1gJ_DhMq6fYfa-F22o66bhQ9KDEHcyaJZ/view?usp=sharing)  
 [RICE_results](https://drive.google.com/file/d/1Ubq1NWoKs-meZKnkYIrPV93Hk05nC71l/view?usp=sharing)  
